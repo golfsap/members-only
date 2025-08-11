@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const db = require("../db/queries");
 
-exports.showSignupForm = async (req, res) => {
+exports.showSignupForm = (req, res) => {
   res.render("signup");
 };
 
@@ -34,5 +34,47 @@ exports.signup = async (req, res) => {
     }
     console.error(err);
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.showLoginForm = (req, res) => {
+  res.render("login");
+};
+
+exports.showJoinForm = (req, res) => {
+  if (req.user.role === "club") {
+    return res.redirect("/");
+  }
+  res.render("join");
+};
+
+exports.logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+};
+
+exports.joinClub = async (req, res, next) => {
+  const { passcode } = req.body;
+
+  try {
+    if (passcode === process.env.MEMBER_PASSCODE) {
+      const user = await db.updateUserRole(req.user.id);
+
+      if (!user) {
+        return res
+          .status(500)
+          .json({ message: "Could not update member status" });
+      }
+
+      res.redirect("/");
+    } else {
+      res.render("join", { error: "Invalid passcode" });
+    }
+  } catch (err) {
+    next(err);
   }
 };

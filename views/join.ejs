@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join the Club</title>
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+    <h1>Join the ClubHouse!</h1>
+    <% if (error) { %>
+    <div style="color: red"><%= error %></div>
+    <% } %>
+    <form action="/join" method="POST">
+      <label for="passcode">Enter the passcode:</label>
+      <input type="password" id="passcode" name="passcode" required />
+      <button type="submit">Go</button>
+    </form>
+  </body>
+</html>

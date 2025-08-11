@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up</title>
+  </head>
+  <body>
+    <h1>Sign up to join the Clubhouse!</h1>
+    <form action="/signup" method="POST">
+      <label for="first-name">First name</label>
+      <input
+        type="text"
+        name="first_name"
+        id="first-name"
+        placeholder="First Name"
+        required
+      />
+      <label for="last-name">Last name</label>
+      <input
+        type="text"
+        name="last_name"
+        id="last-name"
+        placeholder="Last Name"
+        required
+      />
+      <label for="">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Email"
+        required
+      />
+      <label for="password">Password</label>
+      <input type="password" name="password" required placeholder="password" />
+      <label for="confirm-password">Confirm password:</label>
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm-password"
+        placeholder="Confirm password"
+        required
+      />
+      <button type="submit">Sign up</button>
+    </form>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 <nav>
   <a href="/">Home</a>
   <% if (currentUser) { %>
+  <a href="/create-msg">Create message</a>
   <a href="/logout">Log out</a>
   <% } else { %>
   <a href="/login">Log in</a>

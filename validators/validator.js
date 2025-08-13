@@ -31,3 +31,18 @@ exports.loginValidator = [
     .isLength({ min: 8 })
     .withMessage("Password is at least 8 chars"),
 ];
+
+exports.createMsgValidator = [
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("Title is required.")
+    .isLength({ max: 200 })
+    .withMessage("Title cannot exceed 200 characters."),
+  body("text")
+    .trim()
+    .notEmpty()
+    .withMessage("Message text is required.")
+    .isLength({ max: 1000 })
+    .withMessage("Message text cannot exceed 1000 characters."),
+];

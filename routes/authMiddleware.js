@@ -3,5 +3,5 @@ exports.isAuth = (req, res, next) => {
     return next();
   }
   res.status(401).json({ msg: "You are not authorized to view this resource" });
-  //   res.redirect("/");
+  //   res.redirect("/login");
 };

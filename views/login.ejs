@@ -8,6 +8,7 @@
   <body>
     <%- include('partials/navbar') %>
     <h1>Login Page</h1>
+    <%- include("partials/errors.ejs") %>
     <form action="/login" method="POST">
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required />

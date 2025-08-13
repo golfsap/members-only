@@ -8,6 +8,7 @@
   <body>
     <%- include('partials/navbar') %>
     <h1>Sign up to join the Clubhouse!</h1>
+    <%- include('partials/errors.ejs') %>
     <form action="/signup" method="POST">
       <label for="first-name">First name</label>
       <input

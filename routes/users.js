@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const userController = require("../controllers/userController");
-const { signupValidator } = require("../validators/userValidator");
-const passport = require("passport");
+const {
+  signupValidator,
+  loginValidator,
+} = require("../validators/userValidator");
 const authMiddleware = require("./authMiddleware");
 
 const usersRouter = Router();
@@ -12,13 +14,7 @@ const usersRouter = Router();
 
 usersRouter.post("/signup", signupValidator, userController.signup);
 
-usersRouter.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/join",
-    failureRedirect: "/login",
-  })
-);
+usersRouter.post("/login", loginValidator, userController.login);
 
 usersRouter.post("/join", authMiddleware.isAuth, userController.joinClub);
 

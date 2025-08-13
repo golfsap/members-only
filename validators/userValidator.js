@@ -18,3 +18,16 @@ exports.signupValidator = [
     return true;
   }),
 ];
+
+exports.loginValidator = [
+  body("email")
+    .trim()
+    .isEmail()
+    .withMessage("Invalid email format")
+    .normalizeEmail(),
+  body("password")
+    .notEmpty()
+    .withMessage("Password is required")
+    .isLength({ min: 8 })
+    .withMessage("Password is at least 8 chars"),
+];

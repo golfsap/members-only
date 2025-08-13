@@ -8,9 +8,7 @@
   <body>
     <%- include('partials/navbar') %>
     <h1>Join the ClubHouse!</h1>
-    <% if (error) { %>
-    <div style="color: red"><%= error %></div>
-    <% } %>
+    <%- include('partials/errors.ejs') %>
     <form action="/join" method="POST">
       <label for="passcode">Enter the passcode:</label>
       <input type="password" id="passcode" name="passcode" required />

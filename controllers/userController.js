@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const db = require("../db/queries");
+const passport = require("passport");
 
 exports.showSignupForm = (req, res) => {
   res.render("signup");
@@ -9,7 +10,8 @@ exports.showSignupForm = (req, res) => {
 exports.signup = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.render("signup", { errors: errors.array().map((e) => e.msg) });
+    // return res.status(400).json({ errors: errors.array() });
   }
 
   const { email, first_name, last_name, password } = req.body;
@@ -24,21 +26,50 @@ exports.signup = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(500).json({ message: "Could not register user", user });
+      return res.render("signup", { errors: ["Could not register user"] });
+      // return res.status(500).json({ message: "Could not register user", user });
     }
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
     if (err.code === "23505") {
-      return res.status(400).json({ error: "Email already in use" });
+      return res.render("signup", { errors: ["Email already in use"] });
+      // return res.status(400).json({ error: "Email already in use" });
     }
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    return res.render("signup", {
+      errors: ["Server error, please try again later"],
+    });
+    // res.status(500).json({ error: "Server error" });
   }
 };
 
 exports.showLoginForm = (req, res) => {
   res.render("login");
+};
+
+exports.login = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.render("login", { errors: errors.array().map((e) => e.msg) });
+  }
+
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error("Authentication error:", err);
+      return next(err);
+    }
+    if (!user) {
+      return res.render("login", { errors: [info.message] });
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error("Login error:", err);
+        return next(err);
+      }
+      return res.redirect("/");
+    });
+  })(req, res, next);
 };
 
 exports.showJoinForm = (req, res) => {
@@ -65,14 +96,17 @@ exports.joinClub = async (req, res, next) => {
       const user = await db.updateUserRole(req.user.id);
 
       if (!user) {
-        return res
-          .status(500)
-          .json({ message: "Could not update member status" });
+        return res.render("join", {
+          errors: ["Could not update member status"],
+        });
+        // return res
+        //   .status(500)
+        //   .json({ message: "Could not update member status" });
       }
 
       res.redirect("/");
     } else {
-      res.render("join", { error: "Invalid passcode" });
+      res.render("join", { errors: ["Invalid passcode"] });
     }
   } catch (err) {
     next(err);

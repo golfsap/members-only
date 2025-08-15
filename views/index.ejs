@@ -7,8 +7,44 @@
   </head>
   <body>
     <%- include('partials/navbar') %>
+
     <h1>Welcome to the ClubHouse!</h1>
-    <a href="/signup">Sign up</a>
-    <a href="/login">Log in</a>
+
+    <% if (user) { %>
+    <p class="welcome-msg">Welcome, <%= user.first_name %>!</p>
+    <% if (user.role === "member") { %>
+    <p><a href="/join">Join the club</a> to see who posted!</p>
+    <% } %> <% } else { %>
+    <p><a href="/login">Log in</a> to post a message</p>
+    <% } %>
+
+    <h2>Posts by our members:</h2>
+    <% messages.forEach(msg => { %>
+    <div class="message">
+      <h3><%= msg.title %></h3>
+      <p><%= msg.content %></p>
+
+      <% if (isClubMember || isAdmin) { %>
+      <p class="meta">
+        <%= msg.first_name %> <%= msg.last_name %> - <%=
+        msg.created_at.toLocaleString() %>
+      </p>
+      <% if (isAdmin) { %>
+      <form
+        method="POST"
+        action="/messages/<%= msg.id %>?_method=DELETE"
+        onsubmit="return confirmDelete()"
+      >
+        <button type="submit">Delete</button>
+      </form>
+      <% } %> <% } %>
+    </div>
+    <% }) %>
+
+    <script>
+      function confirmDelete() {
+        return confirm("Are you sure you want to delete this message?");
+      }
+    </script>
   </body>
 </html>

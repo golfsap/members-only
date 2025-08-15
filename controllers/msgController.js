@@ -31,3 +31,44 @@ exports.createMsg = async (req, res) => {
     });
   }
 };
+
+exports.getHomepage = async (req, res) => {
+  try {
+    const messages = await db.getAllMessages();
+
+    res.render("index", {
+      messages,
+      user: req.user || null,
+      isClubMember: req.user?.role === "club",
+      isAdmin: req.user?.role === "admin",
+    });
+  } catch (err) {
+    console.error(err);
+    res.render("index", { messages: [], isClubMember: false });
+  }
+};
+
+exports.deleteMsg = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const message = await db.getMessageById({ id });
+
+    if (!message) {
+      return res.status(404).json({ msg: "Message not found" });
+    }
+
+    const deleted = await db.deleteMessage({ id });
+
+    if (!deleted) {
+      return res.status(400).json({ msg: "Cannot delete message" });
+    }
+
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error deleting category:", err);
+    return res.render("index", {
+      errors: ["Server error, please try again later"],
+    });
+  }
+};

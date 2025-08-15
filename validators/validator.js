@@ -17,6 +17,14 @@ exports.signupValidator = [
     }
     return true;
   }),
+  body("admin_passcode").custom((value) => {
+    if (!value) return true;
+
+    if (value !== process.env.ADMIN_PASSCODE) {
+      throw new Error("Incorrect admin passcode");
+    }
+    return true;
+  }),
 ];
 
 exports.loginValidator = [

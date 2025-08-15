@@ -4,6 +4,7 @@ const routes = require("./routes");
 const session = require("express-session");
 const passport = require("passport");
 const pool = require("./db/pool");
+const methodOverride = require("method-override");
 
 const pgSession = require("connect-pg-simple")(session);
 
@@ -20,6 +21,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 /**
  * -------------- SESSION SETUP ----------------

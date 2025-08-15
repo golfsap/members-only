@@ -11,36 +11,39 @@ exports.signup = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.render("signup", { errors: errors.array().map((e) => e.msg) });
-    // return res.status(400).json({ errors: errors.array() });
   }
 
-  const { email, first_name, last_name, password } = req.body;
+  const { email, first_name, last_name, password, admin_passcode } = req.body;
 
   try {
     const password_hash = await bcrypt.hash(password, 10);
-    const user = await db.addUser({
+
+    const userData = {
       email,
       first_name,
       last_name,
       password_hash,
-    });
+    };
+
+    if (admin_passcode && admin_passcode === process.env.ADMIN_PASSCODE) {
+      userData.role = "admin";
+    }
+
+    const user = await db.addUser(userData);
 
     if (!user) {
       return res.render("signup", { errors: ["Could not register user"] });
-      // return res.status(500).json({ message: "Could not register user", user });
     }
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
     if (err.code === "23505") {
       return res.render("signup", { errors: ["Email already in use"] });
-      // return res.status(400).json({ error: "Email already in use" });
     }
     console.error(err);
     return res.render("signup", {
       errors: ["Server error, please try again later"],
     });
-    // res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -106,7 +109,7 @@ exports.joinClub = async (req, res, next) => {
 
       res.redirect("/");
     } else {
-      res.render("join", { errors: ["Invalid passcode"] });
+      res.render("join", { errors: ["Sorry, wrong passcode :("] });
     }
   } catch (err) {
     next(err);

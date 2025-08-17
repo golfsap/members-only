@@ -6,7 +6,7 @@ require("dotenv").config();
 async function main() {
   console.log("Seeding...");
   const client = new Client({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL_REMOTE,
   });
   await client.connect();
   await client.query(`CREATE TABLE IF NOT EXISTS users (

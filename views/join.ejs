@@ -4,15 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join the Club</title>
+    <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
     <%- include('partials/navbar') %>
-    <h1>Join the ClubHouse!</h1>
-    <%- include('partials/errors.ejs') %>
-    <form action="/join" method="POST">
-      <label for="passcode">Enter the passcode:</label>
-      <input type="password" id="passcode" name="passcode" required />
-      <button type="submit">Go</button>
-    </form>
+    <div class="container">
+      <h1 class="center-h1">
+        Join the
+        <span class="hint" data-hint="Clue: What is the king of fruits?"
+          >ClubHouse!</span
+        >
+      </h1>
+      <%- include('partials/errors.ejs') %>
+      <form action="/join" method="POST">
+        <label for="passcode">Enter the passcode:</label>
+        <input type="password" id="passcode" name="passcode" required />
+        <button type="submit">Go</button>
+      </form>
+    </div>
   </body>
 </html>

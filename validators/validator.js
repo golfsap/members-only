@@ -3,11 +3,7 @@ const { body } = require("express-validator");
 exports.signupValidator = [
   body("first_name").trim().notEmpty().withMessage("First name is required"),
   body("last_name").trim().notEmpty().withMessage("Last name is required"),
-  body("email")
-    .trim()
-    .isEmail()
-    .withMessage("Invalid email format")
-    .normalizeEmail(),
+  body("email").trim().isEmail().withMessage("Invalid email format"),
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters"),
@@ -28,16 +24,8 @@ exports.signupValidator = [
 ];
 
 exports.loginValidator = [
-  body("email")
-    .trim()
-    .isEmail()
-    .withMessage("Invalid email format")
-    .normalizeEmail(),
-  body("password")
-    .notEmpty()
-    .withMessage("Password is required")
-    .isLength({ min: 8 })
-    .withMessage("Password is at least 8 chars"),
+  body("email").trim().notEmpty().withMessage("Email is required"),
+  body("password").trim().notEmpty().withMessage("Password is required"),
 ];
 
 exports.createMsgValidator = [

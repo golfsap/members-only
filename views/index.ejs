@@ -4,42 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Homepage</title>
+    <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
     <%- include('partials/navbar') %>
 
-    <h1>Welcome to the ClubHouse!</h1>
-
-    <% if (user) { %>
-    <p class="welcome-msg">Welcome, <%= user.first_name %>!</p>
-    <% if (user.role === "member") { %>
-    <p><a href="/join">Join the club</a> to see who posted!</p>
-    <% } %> <% } else { %>
-    <p><a href="/login">Log in</a> to post a message</p>
-    <% } %>
-
-    <h2>Posts by our members:</h2>
-    <% messages.forEach(msg => { %>
-    <div class="message">
-      <h3><%= msg.title %></h3>
-      <p><%= msg.content %></p>
-
-      <% if (isClubMember || isAdmin) { %>
-      <p class="meta">
-        <%= msg.first_name %> <%= msg.last_name %> - <%=
-        msg.created_at.toLocaleString() %>
+    <div class="container">
+      <h1>Welcome to the <span class="highlight-color">ClubHouse!</span></h1>
+      <% if (user) { %>
+      <p class="welcome-msg">Welcome, <%= user.first_name %>!</p>
+      <% if (user.role === "member") { %>
+      <p class="invite-msg">
+        <a href="/join">Join the club</a> to see who posted!
       </p>
-      <% if (isAdmin) { %>
-      <form
-        method="POST"
-        action="/messages/<%= msg.id %>?_method=DELETE"
-        onsubmit="return confirmDelete()"
-      >
-        <button type="submit">Delete</button>
-      </form>
-      <% } %> <% } %>
+      <% } %> <% } else { %>
+      <p class="invite-msg"><a href="/login">Log in</a> to post a message</p>
+      <% } %>
+      <h2>Posts by our members:</h2>
+      <% messages.forEach(msg => { %>
+      <div class="message">
+        <h3><%= msg.title %></h3>
+        <p><%= msg.content %></p>
+        <% if (isClubMember || isAdmin) { %>
+        <div class="meta">
+          <p>
+            <%= msg.first_name %> <%= msg.last_name %> - <%=
+            msg.created_at.toLocaleString() %>
+          </p>
+          <% if (isAdmin) { %>
+          <form
+            method="POST"
+            action="/messages/<%= msg.id %>?_method=DELETE"
+            onsubmit="return confirmDelete()"
+          >
+            <button type="submit">Delete</button>
+          </form>
+          <% } %>
+        </div>
+        <% } %>
+      </div>
+      <% }) %>
     </div>
-    <% }) %>
 
     <script>
       function confirmDelete() {

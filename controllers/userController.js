@@ -8,12 +8,17 @@ exports.showSignupForm = (req, res) => {
 };
 
 exports.signup = async (req, res) => {
+  const { email, first_name, last_name } = req.body;
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render("signup", { errors: errors.array().map((e) => e.msg) });
+    return res.render("signup", {
+      errors: errors.array().map((e) => e.msg),
+      formData: { email, first_name, last_name },
+    });
   }
 
-  const { email, first_name, last_name, password, admin_passcode } = req.body;
+  const { password, admin_passcode } = req.body;
 
   try {
     const password_hash = await bcrypt.hash(password, 10);
@@ -32,13 +37,26 @@ exports.signup = async (req, res) => {
     const user = await db.addUser(userData);
 
     if (!user) {
-      return res.render("signup", { errors: ["Could not register user"] });
+      return res.render("signup", {
+        errors: ["Could not register user"],
+        formData: { email, first_name, last_name },
+      });
     }
 
-    res.status(201).json({ message: "User registered successfully" });
+    // Auto-login with Passport
+    req.login(user, (err) => {
+      if (err) {
+        console.error("Login error:", err);
+        return next(err);
+      }
+      return res.redirect("/");
+    });
   } catch (err) {
     if (err.code === "23505") {
-      return res.render("signup", { errors: ["Email already in use"] });
+      return res.render("signup", {
+        errors: ["Email already in use"],
+        formData: { email, first_name, last_name },
+      });
     }
     console.error(err);
     return res.render("signup", {
@@ -52,9 +70,14 @@ exports.showLoginForm = (req, res) => {
 };
 
 exports.login = (req, res, next) => {
+  const { email } = req.body;
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render("login", { errors: errors.array().map((e) => e.msg) });
+    return res.render("login", {
+      errors: errors.array().map((e) => e.msg),
+      formData: { email },
+    });
   }
 
   passport.authenticate("local", (err, user, info) => {
@@ -63,7 +86,10 @@ exports.login = (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      return res.render("login", { errors: [info.message] });
+      return res.render("login", {
+        errors: [info.message],
+        formData: { email },
+      });
     }
     req.logIn(user, (err) => {
       if (err) {

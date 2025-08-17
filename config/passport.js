@@ -14,12 +14,14 @@ module.exports = (passport) => {
         const user = await db.findUser({ email });
 
         if (!user) {
-          return done(null, false, { message: "Incorrect email" });
+          return done(null, false, {
+            message: "Invalid email or password",
+          });
         }
 
         const match = await bcrypt.compare(password, user.password_hash);
         if (!match) {
-          return done(null, false, { message: "Incorrect password" });
+          return done(null, false, { message: "Invalid email or password" });
         }
         return done(null, user);
       } catch (err) {

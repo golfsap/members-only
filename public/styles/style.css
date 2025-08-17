@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap");
+
+:root {
+  --background-color: #f9fafb;
+  --light-blue-color: #799eff;
+  --pale-yellow-color: #feffc4;
+  --yellow-color: #ffde63;
+  --sunflower-color: #ffbc4c;
+  --red-color: #c62828;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Google Sans Code", monospace;
+  background-color: var(--background-color);
+  color: #333;
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+  color: var(--light-blue-color);
+}
+a:hover {
+  text-decoration: underline;
+}
+
+nav {
+  background-color: var(--light-blue-color);
+  padding: 1rem;
+  display: flex;
+}
+
+.nav-links {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.2rem;
+}
+.nav-links a {
+  color: #333;
+  font-weight: 500;
+}
+.nav-links a:hover {
+  color: var(--yellow-color);
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+.center-h1 {
+  text-align: center;
+}
+
+h2 {
+  margin: 1rem 0;
+  font-weight: 600;
+  /* font-style: italic; */
+}
+
+.highlight-color {
+  color: var(--sunflower-color);
+}
+
+.welcome-msg,
+.invite-msg {
+  font-weight: 200;
+  font-style: italic;
+}
+
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.message {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  padding: 1rem;
+  background: white;
+
+  border: 1px solid transparent;
+  background-clip: padding-box, border-box;
+  background-origin: border-box;
+  background-image: linear-gradient(white, white),
+    linear-gradient(135deg, #ffbc4c, #799eff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.message h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.message button {
+  background-color: transparent;
+  color: #333;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.message button:hover {
+  text-decoration: underline;
+}
+
+button {
+  padding: 0.2rem 0.4rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--light-blue-color);
+}
+button:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  color: #666;
+}
+.meta form {
+  margin: 0;
+}
+
+.meta p {
+  font-size: 11px;
+  font-weight: 200;
+  font-style: italic;
+  margin: 4px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 500px;
+  margin: auto;
+}
+
+input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+  border: 1px solid #333;
+}
+
+.errors-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: auto;
+  margin-bottom: 0.5rem;
+  color: var(--red-color);
+  font-weight: 500;
+  gap: 0.3rem;
+}
+
+.hint {
+  position: relative;
+}
+.hint::after {
+  opacity: 0;
+  content: attr(data-hint);
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 6px 10px;
+  transition: opacity 0.2s ease-in-out;
+}
+.hint:hover::after {
+  opacity: 1;
+}

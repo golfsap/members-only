@@ -5,3 +5,5 @@ A message board application built with **Node.js**, **Express**, **PostgreSQL** 
 Unregistered users can view posted messages, users can sign-up where their credentials and password are safely stored in the database using **bcrypt** for password hashing. Logged in users can create messages while club members can post and view authors of each message. Admin roles can view all and have the ability to delete messages as well.
 
 Authentication middleware is used to protect certain routes and **express-validator** is used for form validation.
+
+**Live demo:** https://members-only-8zy3.onrender.com/
